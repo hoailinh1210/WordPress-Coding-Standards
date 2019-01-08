@@ -20,104 +20,17 @@
 
 # WordPress Coding Standards for PHP_CodeSniffer
 
-* [Introduction](#introduction)
-* [Project history](#project-history)
-* [Installation](#installation)
-    + [Requirements](#requirements)
-    + [Composer](#composer)
-    + [Standalone](#standalone)
-* [Rulesets](#rulesets)
-    + [Standards subsets](#standards-subsets)
-    + [Using a custom ruleset](#using-a-custom-ruleset)
-    + [Customizing sniff behaviour](#customizing-sniff-behaviour)
-    + [Recommended additional rulesets](#recommended-additional-rulesets)
-* [How to use](#how-to-use)
-    + [Command line](#command-line)
-    + [Using PHPCS and WPCS from within your IDE](#using-phpcs-and-wpcs-from-within-your-ide)
-* [Running your code through WPCS automatically using CI tools](#running-your-code-through-wpcs-automatically-using-ci-tools)
-    + [Travis CI](#travis-ci)
-* [Fixing errors or whitelisting them](#fixing-errors-or-whitelisting-them)
-    + [Tools shipped with WPCS](#tools-shipped-with-wpcs)
-* [Contributing](#contributing)
 * [License](#license)
 
 ## Introduction
 
 This project is a collection of [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) rules (sniffs) to validate code developed for WordPress. It ensures code quality and adherence to coding conventions, especially the official [WordPress Coding Standards](https://make.wordpress.org/core/handbook/best-practices/coding-standards/).
 
-## Project history
-
- - On 22nd April 2009, the original project from [Urban Giraffe](https://urbangiraffe.com/articles/wordpress-codesniffer-standard/) was packaged and published.
- - In May 2011 the project was forked and [added](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/commit/04fd547c691ca2baae3fa8e195a46b0c9dd671c5) to GitHub by [Chris Adams](https://chrisadams.me.uk/).
- - In April 2012 [XWP](https://xwp.co/) started to dedicate resources to develop and lead the creation of the sniffs and rulesets for `WordPress-Core`, `WordPress-VIP` (WordPress.com VIP), and `WordPress-Extra`.
- - In May 2015, an initial documentation ruleset was [added](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/commit/b1a4bf8232a22563ef66f8a529357275a49f47dc#diff-a17c358c3262a26e9228268eb0a7b8c8) as `WordPress-Docs`.
- - In 2015, [J.D. Grimes](https://github.com/JDGrimes) began significant contributions, along with maintenance from [Gary Jones](https://github.com/GaryJones).
- - In 2016, [Juliette Reinders Folmer](https://github.com/jrfnl) began contributing heavily, adding more commits in a year than anyone else in the five years since the project was added to GitHub.
- - In July 2018, version [`1.0.0`](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/releases/tag/1.0.0) of the project was released.
-
 ## Installation
 
 ### Requirements
 
-The WordPress Coding Standards require PHP 5.4 or higher and [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) version **3.3.1** or higher.
-
-### Composer
-
-Standards can be installed with the [Composer](https://getcomposer.org/) dependency manager:
-
-    composer create-project wp-coding-standards/wpcs --no-dev
-
-Running this command will:
-
-1. Install WordPress standards into `wpcs` directory.
-2. Install PHP_CodeSniffer.
-3. Register WordPress standards in PHP_CodeSniffer configuration.
-4. Make `phpcs` command available from `wpcs/vendor/bin`.
-
-For the convenience of using `phpcs` as a global command, you may want to add the path to the `wpcs/vendor/bin` directory to a `PATH` environment variable for your operating system.
-
-#### Installing WPCS as a dependency
-
-When installing the WordPress Coding Standards as a dependency in a larger project, the above mentioned step 3 will not be executed automatically.
-
-There are two actively maintained Composer plugins which can handle the registration of standards with PHP_CodeSniffer for you:
-* [composer-phpcodesniffer-standards-plugin](https://github.com/higidi/composer-phpcodesniffer-standards-plugin)
-* [phpcodesniffer-composer-installer](https://github.com/DealerDirect/phpcodesniffer-composer-installer):"^0.4.3"
-
-It is strongly suggested to `require` one of these plugins in your project to handle the registration of external standards with PHPCS for you.
-
-### Standalone
-
-1. Install PHP_CodeSniffer by following its [installation instructions](https://github.com/squizlabs/PHP_CodeSniffer#installation) (via Composer, Phar file, PEAR, or Git checkout).
-
-   Do ensure that PHP_CodeSniffer's version matches our [requirements](#requirements), if, for example, you're using [VVV](https://github.com/Varying-Vagrant-Vagrants/VVV).
-
-2. Clone the WordPress standards repository:
-
-        git clone -b master https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git wpcs
-
-3. Add its path to the PHP_CodeSniffer configuration:
-
-        phpcs --config-set installed_paths /path/to/wpcs
-
-   **Pro-tip:** Alternatively, you can tell PHP_CodeSniffer the path to the WordPress standards by adding the following snippet to your custom ruleset:
-   ```xml
-   <config name="installed_paths" value="/path/to/wpcs" />
-   ```
-
-To summarize:
-
-```bash
-cd ~/projects
-git clone https://github.com/squizlabs/PHP_CodeSniffer.git phpcs
-git clone -b master https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git wpcs
-cd phpcs
-./bin/phpcs --config-set installed_paths ../wpcs
-```
-
-And then add the `~/projects/phpcs/bin` directory to your `PATH` environment variable via your `.bashrc`.
-
-You should then see `WordPress-Core` et al listed when you run `phpcs -i`.
+The WordPress Coding Standards require PHP 5.4 or higher and [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) version **3.3.1** or higher on global
 
 ##  Rulesets
 
@@ -216,11 +129,21 @@ Will result in following output:
 
 ### Using PHPCS and WPCS from within your IDE
 
-* **PhpStorm** : Please see "[PHP Code Sniffer with WordPress Coding Standards Integration](https://confluence.jetbrains.com/display/PhpStorm/WordPress+Development+using+PhpStorm#WordPressDevelopmentusingPhpStorm-PHPCodeSnifferwithWordPressCodingStandardsIntegrationinPhpStorm)" in the PhpStorm documentation.
-* **Sublime Text** : Please see "[Setting up WPCS to work in Sublime Text](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Setting-up-WPCS-to-work-in-Sublime-Text)" in the wiki.
-* **Atom**: Please see "[Setting up WPCS to work in Atom](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Setting-up-WPCS-to-work-in-Atom)" in the wiki.
-* **Visual Studio**: Please see "[Setting up PHP CodeSniffer in Visual Studio Code](https://tommcfarlin.com/php-codesniffer-in-visual-studio-code/)", a tutorial by Tom McFarlin.
-* **Eclipse with XAMPP**: Please see "[Setting up WPCS when using Eclipse with XAMPP](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/How-to-use-WPCS-with-Eclipse-and-XAMPP)" in the wiki.
+* **PhpStorm**
+1. Clone the repository to a central place and choose a directory called wpcs in your user directory:
+	```bash
+	$ cd ~
+	$ git clone git@github.com:WordPress-Coding-Standards/WordPress-Coding-Standards.git wpcs
+	```
+2. Tell PHPCS about this directory
+phpcs will load all the available coding standards from its built in list, and from any directory in its configured installed paths. We need to add the ~/wpcs directory (where we cloned the repository in the previous step) to the installed paths:
+	```bash
+	$ phpcs --config-set installed_paths /Users/exampleuser/wpcs
+	```
+3. Config "PHP Code Sniffer Path" In File | Settings | Languages & Frameworks | PHP | Quality Tools 
+4. The WordPress Coding Standards package will be installed, and the corresponding Wordpress standard will be selected for the PHP Code Sniffer validation inspection automatically. If necessary, you can further customize the inspection on the Editor | Inspections page of the Settings/Preferences dialog (Ctrl+Alt+S). See Configuring PHP Code Sniffer as a PhpStorm inspection to config custom path
+
+Happy coding !
 
 
 ## Running your code through WPCS automatically using CI tools

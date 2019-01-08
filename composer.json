@@ -39,7 +39,9 @@
 		],
 		"run-tests": [
 			"@php ./vendor/phpunit/phpunit/phpunit --filter WordPress --bootstrap=\"./vendor/squizlabs/php_codesniffer/tests/bootstrap.php\" ./vendor/squizlabs/php_codesniffer/tests/AllTests.php"
-		]
+		],
+		"post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/phpcompatibility/php-compatibility",
+		"post-update-cmd" : "\"vendor/bin/phpcs\" --config-set installed_paths vendor/phpcompatibility/php-compatibility"
 	},
 	"support": {
 		"issues": "https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/issues",
