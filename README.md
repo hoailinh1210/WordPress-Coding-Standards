@@ -138,6 +138,7 @@ Will result in following output:
 2. Tell PHPCS about this directory
 phpcs will load all the available coding standards from its built in list, and from any directory in its configured installed paths. We need to add the ~/wpcs directory (where we cloned the repository in the previous step) to the installed paths:
 	```bash
+	$ export PATH="$HOME/.composer/vendor/bin:$PATH"
 	$ phpcs --config-set installed_paths /Users/exampleuser/wpcs
 	```
 3. Config "PHP Code Sniffer Path" In File | Settings | Languages & Frameworks | PHP | Quality Tools 
